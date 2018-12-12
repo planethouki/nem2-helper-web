@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    include _header
+    .container
+        .row._margin-bottom20
+        .row
+            h1 #{title}
+        .row
+            ._floatLeft#pagination
+        .row
+            #blockTable
+    include _footer
+
+block script
+    script(src="javascripts/account.js")
