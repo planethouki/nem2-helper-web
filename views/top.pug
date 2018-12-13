@@ -2,14 +2,37 @@ extends layout
 
 block content
     include _header
-    .container
-        .row._margin-bottom20
-        .row
-            h1 #{title}
-        .row
-            ._floatLeft#pagination
-        .row
-            #blockTable
+    .container#app
+        .row#a
+            .col.s12
+                h5.header PrivateKey to PublicKey (NEVER recommended)
+                .input-field
+                    input#a-private-key.validate(type="text" v-model:value="a_privateKey")
+                    label(for="a-private-key") Private Key
+                div {{ a_publicKey }}
+        .row#b
+            .col.s12
+                h5.header PublicKey to Address
+                .input-field
+                    input#b-public-key.validate(type="text" v-model:value="b_publicKey")
+                    label(for="b-public-key") Public Key
+                div {{ b_address_plain }}
+                div {{ b_address_pretty }}
+        .row#c
+            .col.s12
+                h5.header Hex Address Encode
+                .input-field
+                    input#c-address.validate(type="text" v-model:value="c_address")
+                    label(for="c-address") Hex Address
+                div {{ c_address_plain }}
+                div {{ c_address_pretty }}
+        .row#d
+            .col.s12
+                h5.header Address Decode
+                .input-field
+                    input#d-address.validate(type="text" v-model:value="d_address")
+                    label(for="d-address") Address
+                div {{ d_address_decoded }}
     include _footer
 
 block script
