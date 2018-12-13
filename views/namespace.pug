@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    include _header
+    .container#app
+        .row#e
+            .col.s12
+                h5.header Namespace
+                .input-field
+                    input#e-namespace.validate(type="text" v-model:value="e_namespace")
+                    label(for="e-namespace") Namespace
+                div {{ e_namespace_id_uint64 }}
+                div {{ e_namespace_id_hex }}
+        .row#f
+            .col.s12
+                h5.header SubNamespace
+                .input-field
+                    input#f-sub-namespace.validate(type="text" v-model:value="f_sub_namespace")
+                    label(for="f-sub-namespace") SubNamespace
+                .input-field
+                    input#f-parent-namespace.validate(type="text" v-model:value="f_parent_namespace")
+                    label(for="f-parent-namespace") ParentNamespace
+                div {{ f_namespace_id_uint64 }}
+                div {{ f_namespace_id_hex }}
+        .row#g
+            .col.s12
+                h5.header Mosaic
+                .input-field
+                    input#g-mosaic.validate(type="text" v-model:value="g_mosaic")
+                    label(for="g-mosaic") Namespace[.SubNamespace]:Mosaic
+                div {{ g_mosaic_id_uint64 }}
+                div {{ g_mosaic_id_hex }}
+    include _footer
+
+block script
+    script(src="javascripts/namespace.js")

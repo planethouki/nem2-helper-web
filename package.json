@@ -19,6 +19,7 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
+    "nem2-library": "^0.9.5",
     "nem2-sdk": "^0.10.1",
     "pug": "2.0.0-beta11",
     "rxjs": "^6.3.3"

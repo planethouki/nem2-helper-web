@@ -52,13 +52,57 @@ router.get('/address/encode', async function(req, res, next) {
 
 router.get('/address/decode', async function(req, res, next) {
     try {
-        console.log(req.query.address);
         const address = nem2Sdk.Address.createFromRawAddress(req.query.address);
         const binAddress = nem2lib.address.stringToAddress(address.plain());
         const hexAddress = nem2lib.convert.uint8ToHex(binAddress);
         res.json({address: hexAddress});
     } catch (e) {
         res.json({address: "Error"});
+    }
+});
+
+router.get('/namespace', async function(req, res, next) {
+    try {
+        const namespaceId = new nem2Sdk.NamespaceId(req.query.namespace);
+        res.json({
+            namespaceIdUInt64: JSON.stringify(namespaceId.id.toDTO()),
+            namespaceIdHex: namespaceId.toHex()
+        });
+    } catch (e) {
+        res.json({
+            namespaceIdUInt64: "Error",
+            namespaceIdHex: "Error"
+        });
+    }
+});
+
+router.get('/subnamespace', async function(req, res, next) {
+    try {
+        const namespaceId = new nem2Sdk.NamespaceId(req.query.parentNamespace + "." + req.query.subNamespace);
+        res.json({
+            namespaceIdUInt64: JSON.stringify(namespaceId.id.toDTO()),
+            namespaceIdHex: namespaceId.toHex()
+        });
+    } catch (e) {
+        res.json({
+            namespaceIdUInt64: "Error",
+            namespaceIdHex: "Error"
+        });
+    }
+});
+
+router.get('/mosaic', async function(req, res, next) {
+    try {
+        const mosaicId = new nem2Sdk.MosaicId(req.query.mosaic);
+        res.json({
+            mosaicIdUInt64: JSON.stringify(mosaicId.id.toDTO()),
+            mosaicIdHex: mosaicId.toHex()
+        });
+    } catch (e) {
+        res.json({
+            mosaicIdUInt64: "Error",
+            mosaicIdHex: "Error"
+        });
     }
 });
 
