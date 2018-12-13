@@ -17,7 +17,14 @@ block content
                     input#b-public-key.validate(type="text" v-model:value="b_publicKey")
                     label(for="b-public-key") Public Key
                 div {{ b_address_plain }}
-                div {{ b_address_pretty }}
+                div {{ b_address_pretty }}  
+        .row#d
+            .col.s12
+                h5.header Address Decode
+                .input-field
+                    input#d-address.validate(type="text" v-model:value="d_address")
+                    label(for="d-address") Address
+                div {{ d_address_decoded }}
         .row#c
             .col.s12
                 h5.header Hex Address Encode
@@ -26,13 +33,6 @@ block content
                     label(for="c-address") Hex Address
                 div {{ c_address_plain }}
                 div {{ c_address_pretty }}
-        .row#d
-            .col.s12
-                h5.header Address Decode
-                .input-field
-                    input#d-address.validate(type="text" v-model:value="d_address")
-                    label(for="d-address") Address
-                div {{ d_address_decoded }}
     include _footer
 
 block script
