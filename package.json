@@ -1,7 +1,15 @@
 {
   "name": "nem2-helper-web",
-  "version": "0.0.0",
+  "description": "NEM2 helper web application",
+  "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": "8.11.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/planethouki/nem2-helper-web.git"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
