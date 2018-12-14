@@ -1,8 +1,28 @@
-nav
-    .nav-wrapper.container
-        a.brand-logo(href="/") nem2-helper
-        ul#nav-mobile.right.hide-on-med-and-down
-            li
-                a(href="/") Top
-            li
-                a(href="/namespace") NS & Mosaic
+header
+    nav
+        .nav-wrapper.container
+            a.brand-logo(href="/") nem2-helper
+            a.sidenav-trigger(data-target="mobile-nav" href="#")
+                i.material-icons menu
+            ul.right.hide-on-med-and-down
+                li
+                    a(href="/") Account
+                li
+                    a(href="/namespace") NS & Mosaic
+                li
+                    a(href="/transaction") Transaction
+                li
+                    a(href="/miscellaneous") Miscellaneous
+                li
+                    a(href="/network") Network
+            ul#mobile-nav.sidenav
+                li
+                    a(href="/") Account
+                li
+                    a(href="/namespace") NS & Mosaic
+                li
+                    a(href="/transaction") Transaction
+                li
+                    a(href="/miscellaneous") Miscellaneous
+                li
+                    a(href="/network") Network

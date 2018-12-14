@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    include _header
+    main.container#app
+        h4 #{ title }
+        .row#s
+            .col.s12
+                h5.header Balance
+        .row#q
+            .col.s12
+                h5.header Your Namespace List
+        .row#r
+            .col.s12
+                h5.header Namespace attached Mosaic List
+        .row#t
+            .col.s12
+                h5.header Multisig Graph
+    include _footer
+
+block script
+    script(src="javascripts/network.js")

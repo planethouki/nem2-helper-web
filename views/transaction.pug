@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    include _header
+    main.container#app
+        h4 #{ title }
+        .row#h
+            .col.s12
+                h5.header Base64 Hash Decode
+        .row#i
+            .col.s12
+                h5.header Type to Name
+        .row#j
+            .col.s12
+                h5.header Sha3 256
+        .row#k
+            .col.s12
+                h5.header Sha3 512
+        .row#l
+            .col.s12
+                h5.header Payload to Hash
+    include _footer
+
+block script
+    script(src="javascripts/transaction.js")

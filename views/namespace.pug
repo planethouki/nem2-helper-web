@@ -2,18 +2,21 @@ extends layout
 
 block content
     include _header
-    .container#app
+    main.container#app
+        h4 #{ title }
         .row#e
             .col.s12
-                h5.header Namespace
+                h5.header Namespace to ID
                 .input-field
                     input#e-namespace.validate(type="text" v-model:value="e_namespace")
                     label(for="e-namespace") Namespace
                 div {{ e_namespace_id_uint64 }}
                 div {{ e_namespace_id_hex }}
+                div.right-align(v-if="!e_namespace")
+                    button.waves-effect.waves-light.btn sample
         .row#f
             .col.s12
-                h5.header SubNamespace
+                h5.header SubNamespace to ID
                 .input-field
                     input#f-sub-namespace.validate(type="text" v-model:value="f_sub_namespace")
                     label(for="f-sub-namespace") SubNamespace
@@ -22,14 +25,18 @@ block content
                     label(for="f-parent-namespace") ParentNamespace
                 div {{ f_namespace_id_uint64 }}
                 div {{ f_namespace_id_hex }}
+                div.right-align(v-if="!f_sub_namespace || !f_parent_namespace")
+                    button.waves-effect.waves-light.btn sample
         .row#g
             .col.s12
-                h5.header Mosaic
+                h5.header Mosaic to ID
                 .input-field
                     input#g-mosaic.validate(type="text" v-model:value="g_mosaic")
                     label(for="g-mosaic") Namespace[.SubNamespace]:Mosaic
                 div {{ g_mosaic_id_uint64 }}
                 div {{ g_mosaic_id_hex }}
+                div.right-align(v-if="!g_mosaic")
+                    button.waves-effect.waves-light.btn sample
     include _footer
 
 block script

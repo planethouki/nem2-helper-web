@@ -2,7 +2,8 @@ extends layout
 
 block content
     include _header
-    .container#app
+    main.container#app
+        h4 #{ title }
         .row#a
             .col.s12
                 h5.header PrivateKey to PublicKey (NEVER recommended)
@@ -10,6 +11,8 @@ block content
                     input#a-private-key.validate(type="text" v-model:value="a_privateKey")
                     label(for="a-private-key") Private Key
                 div {{ a_publicKey }}
+                div.right-align(v-if="!a_privateKey")
+                    button.waves-effect.waves-light.btn sample
         .row#b
             .col.s12
                 h5.header PublicKey to Address
@@ -17,7 +20,9 @@ block content
                     input#b-public-key.validate(type="text" v-model:value="b_publicKey")
                     label(for="b-public-key") Public Key
                 div {{ b_address_plain }}
-                div {{ b_address_pretty }}  
+                div {{ b_address_pretty }}
+                div.right-align(v-if="!b_publicKey")
+                    button.waves-effect.waves-light.btn sample
         .row#d
             .col.s12
                 h5.header Address Decode
@@ -25,6 +30,8 @@ block content
                     input#d-address.validate(type="text" v-model:value="d_address")
                     label(for="d-address") Address
                 div {{ d_address_decoded }}
+                div.right-align(v-if="!d_address")
+                    button.waves-effect.waves-light.btn sample
         .row#c
             .col.s12
                 h5.header Hex Address Encode
@@ -33,6 +40,14 @@ block content
                     label(for="c-address") Hex Address
                 div {{ c_address_plain }}
                 div {{ c_address_pretty }}
+                div.right-align(v-if="!c_address")
+                    button.waves-effect.waves-light.btn sample
+        .row#m
+            .col.s12
+                h5.header Sign
+        .row#n
+            .col.s12
+                h5.header Verify Signature
     include _footer
 
 block script
