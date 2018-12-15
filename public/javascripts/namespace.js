@@ -13,6 +13,32 @@ const app = new Vue({
         g_mosaic_id_uint64: '',
         g_mosaic_id_hex: '',
     },
+    methods: {
+        e_sample: function() {
+            this.e_namespace = "foo";
+            this.$refs.e_focus.focus();
+        },
+        f_sample: function() {
+            this.f_parent_namespace = "foo";
+            this.f_sub_namespace = "sub";
+            this.$refs.f_focus2.focus();
+            this.$nextTick(function() {
+                this.$refs.f_focus1.focus();
+            });
+        },
+        g_sample: function() {
+            this.g_mosaic = "foo:bar";
+            this.$refs.g_focus.focus();
+        },
+        f_method: async function() {
+            const response = await axios.get('/ajax/subnamespace', { params: {
+                    parentNamespace: this.f_parent_namespace,
+                    subNamespace: this.f_sub_namespace
+                }});
+            this.f_namespace_id_uint64 = response.data.namespaceIdUInt64;
+            this.f_namespace_id_hex = response.data.namespaceIdHex;
+        }
+    },
     watch: {
         e_namespace: async function(newVal) {
             const response = await axios.get('/ajax/namespace', { params: {namespace: newVal}});
@@ -31,14 +57,4 @@ const app = new Vue({
             this.g_mosaic_id_hex = response.data.mosaicIdHex;
         },
     },
-    methods: {
-        f_method: async function() {
-            const response = await axios.get('/ajax/subnamespace', { params: {
-                parentNamespace: this.f_parent_namespace,
-                subNamespace: this.f_sub_namespace
-            }});
-            this.f_namespace_id_uint64 = response.data.namespaceIdUInt64;
-            this.f_namespace_id_hex = response.data.namespaceIdHex;
-        }
-    }
 });
