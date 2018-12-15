@@ -18,6 +18,17 @@ router.post('/privkey', async function(req, res, next) {
     }
 });
 
+router.post('/privkey/sign', async function(req, res, next) {
+    try {
+        const keypair = nem2lib.KeyPair.createKeyPairFromPrivateKeyString(req.body.privkey);
+        const signData = req.body.data;
+        const signature = nem2lib.KeyPair.sign(keypair, signData);
+        res.json({signature: nem2lib.convert.uint8ToHex(signature)});
+    } catch (e) {
+        res.json({signature: "Error"});
+    }
+});
+
 router.get('/pubkey', async function(req, res, next) {
     try {
         const ac = nem2Sdk.PublicAccount.createFromPublicKey(req.query.pubkey, nw);
@@ -29,6 +40,30 @@ router.get('/pubkey', async function(req, res, next) {
         res.json({
             addressPlain: "Error",
             addressPretty: "Error"
+        });
+    }
+});
+
+router.get('/pubkey/verify', async function(req, res, next) {
+    try {
+        const publicKey = nem2lib.convert.hexToUint8(req.query.pubkey);
+        const data = nem2lib.convert.hexToUint8(req.query.data);
+        const signature = nem2lib.convert.hexToUint8(req.query.signature);
+        const isSuccess = nem2lib.KeyPair.verify(publicKey, data, signature);
+        res.json({result: isSuccess ? 'success' : 'fail'});
+    } catch (e) {
+        res.json({result: 'Error'});
+    }
+});
+
+router.get('/address/plain', async function(req, res, next) {
+    try {
+        res.json({
+            addressPlain: nem2Sdk.Address.createFromRawAddress(req.query.address).plain()
+        });
+    } catch (e) {
+        res.json({
+            addressPlain: "Error"
         });
     }
 });

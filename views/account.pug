@@ -8,46 +8,76 @@ block content
             .col.s12
                 h5.header PrivateKey to PublicKey (NEVER recommended)
                 .input-field
-                    input#a-private-key.validate(type="text" v-model:value="a_privateKey")
+                    input#a-private-key.validate(type="text" v-model:value="a_privateKey" ref="a_focus")
                     label(for="a-private-key") Private Key
                 div {{ a_publicKey }}
                 div.right-align(v-if="!a_privateKey")
-                    button.waves-effect.waves-light.btn sample
+                    button.waves-effect.waves-light.btn(v-on:click="a_sample") sample
         .row#b
             .col.s12
                 h5.header PublicKey to Address
                 .input-field
-                    input#b-public-key.validate(type="text" v-model:value="b_publicKey")
+                    input#b-public-key.validate(type="text" v-model:value="b_publicKey" ref="b_focus")
                     label(for="b-public-key") Public Key
                 div {{ b_address_plain }}
                 div {{ b_address_pretty }}
                 div.right-align(v-if="!b_publicKey")
-                    button.waves-effect.waves-light.btn sample
+                    button.waves-effect.waves-light.btn(v-on:click="b_sample") sample
         .row#d
             .col.s12
                 h5.header Address Decode
                 .input-field
-                    input#d-address.validate(type="text" v-model:value="d_address")
+                    input#d-address.validate(type="text" v-model:value="d_address" ref="d_focus")
                     label(for="d-address") Address
                 div {{ d_address_decoded }}
                 div.right-align(v-if="!d_address")
-                    button.waves-effect.waves-light.btn sample
+                    button.waves-effect.waves-light.btn(v-on:click="d_sample") sample
         .row#c
             .col.s12
                 h5.header Hex Address Encode
                 .input-field
-                    input#c-address.validate(type="text" v-model:value="c_address")
+                    input#c-address.validate(type="text" v-model:value="c_address" ref="c_focus")
                     label(for="c-address") Hex Address
                 div {{ c_address_plain }}
                 div {{ c_address_pretty }}
                 div.right-align(v-if="!c_address")
-                    button.waves-effect.waves-light.btn sample
+                    button.waves-effect.waves-light.btn(v-on:click="c_sample") sample
+        .row#v
+            .col.s12
+                h5.header Address Pretty to Plain
+                .input-field
+                    input#v-address.validate(type="text" v-model:value="v_address" ref="v_focus")
+                    label(for="v-address") Address
+                div {{ v_address_plain }}
+                div.right-align(v-if="!v_address")
+                    button.waves-effect.waves-light.btn(v-on:click="v_sample") sample
         .row#m
             .col.s12
-                h5.header Sign
+                h5.header Sign (NEVER recommended)
+                .input-field
+                    input#m-private-key.validate(type="text" v-model:value="m_private_key" ref="m_focus1")
+                    label(for="m-private-key") Private Key
+                .input-field
+                    input#m-data.validate(type="text" v-model:value="m_data" ref="m_focus2")
+                    label(for="m-data") Hex Data to Sign
+                div {{ m_signature }}
+                div.right-align(v-if="!m_private_key")
+                    button.waves-effect.waves-light.btn(v-on:click="m_sample") sample
         .row#n
             .col.s12
                 h5.header Verify Signature
+                .input-field
+                    input#n-signature.validate(type="text" v-model:value="n_signature" ref="n_focus1")
+                    label(for="n-signature") Signature
+                .input-field
+                    input#n-public-key.validate(type="text" v-model:value="n_public_key" ref="n_focus2")
+                    label(for="n-public-key") Public Key
+                .input-field
+                    input#n-data.validate(type="text" v-model:value="n_data" ref="n_focus3")
+                    label(for="n-data") Hex Data
+                div {{ n_result }}
+                div.right-align(v-if="!n_signature || !n_public_key")
+                    button.waves-effect.waves-light.btn(v-on:click="n_sample") sample
     include _footer
 
 block script
