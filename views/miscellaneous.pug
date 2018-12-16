@@ -5,18 +5,18 @@ block content
     main.container#app
         h4 #{ title }
         .row#w
-            .col.s12.m6
-                h5.header Hex to Dec
-                .input-field
-                    input#w-hex.validate(type="text" v-model:value="w_hex")
-                    label(for="w-hex") Hex
-                div {{ w_result_dec }}
-            .col.s12.m6
-                h5.header Dec to Hex
-                .input-field
-                    input#w-dec.validate(type="text" v-model:value="w_dec")
-                    label(for="w-dec") Dec
-                div {{ w_result_hex }}
+            .col.s12
+                h5.header Hex / Dec
+                .row
+                    .col.s12.m6.input-field
+                        input#w-hex.validate(type="text" v-model:value="w_hex")
+                        label(for="w-hex") Hex
+                    .col.s12.m6.input-field
+                        input#w-dec.validate(type="text" v-model:value="w_dec")
+                        label(for="w-dec") Dec
+        .row#x
+            .col.s12
+                h5.header BigEndian / LittleEndian
         .row#o
             .col.s12
                 h5.header UInt64 To Number

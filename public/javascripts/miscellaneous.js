@@ -11,8 +11,6 @@ const app = new Vue({
         u_message_decoded: '',
         w_hex: '',
         w_dec: '',
-        w_result_hex: '',
-        w_result_dec: '',
     },
     methods: {
         o_sample: function() {
@@ -54,20 +52,21 @@ const app = new Vue({
             const response = await axios.get('/ajax/message/decode', { params: {payload: newVal}});
             this.u_message_decoded = response.data.decoded;
         },
-        w_dec: async function() {
-            const num = Number(this.w_dec);
+        w_dec: async function(newVal, oldVal) {
+            const num = Number(newVal);
             if (Number.isSafeInteger(num)) {
-                this.w_result_hex = num.toString(16).toUpperCase();
-            } else {
-                this.w_result_hex = "Error";
+                const rowHex = num.toString(16).toUpperCase();
+                if (rowHex.length % 2 === 0) {
+                    this.w_hex = rowHex;
+                } else {
+                    this.w_hex = "0" + rowHex;
+                }
             }
         },
-        w_hex: async function(newVal) {
+        w_hex: async function(newVal, oldVal) {
             const num = Number("0x" + newVal);
             if (Number.isSafeInteger(num)) {
-                this.w_result_dec = num.toString(10);
-            } else {
-                this.w_result_dec = "Error";
+                this.w_dec = num.toString(10);
             }
         },
     }
