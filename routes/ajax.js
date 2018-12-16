@@ -233,8 +233,7 @@ router.get('/transaction/type', async function(req, res, next) {
 
 router.get('/sha3/512', async function(req, res, next) {
     try {
-        const sha3_512 = jssha3.sha3_512;
-        const hasher = sha3_512.create();
+        const hasher = jssha3.sha3_512.create();
         const hash = hasher.update(Buffer.from(req.query.payload, 'hex')).hex().toUpperCase();
         res.json({hash});
     } catch (e) {
@@ -246,8 +245,7 @@ router.get('/sha3/512', async function(req, res, next) {
 
 router.get('/sha3/256', async function(req, res, next) {
     try {
-        const sha3_256 = jssha3.sha3_256;
-        const hasher = sha3_256.create();
+        const hasher = jssha3.sha3_256.create();
         const hash = hasher.update(Buffer.from(req.query.payload, 'hex')).hex().toUpperCase();
         res.json({hash});
     } catch (e) {
@@ -264,13 +262,48 @@ router.get('/transaction/hash/payload', async function(req, res, next) {
             payload.substr(4*2,32*2) +
             payload.substr((4+64)*2,32*2) +
             payload.substr((4+64+32)*2);
-        const sha3_256 = jssha3.sha3_256;
-        const hasher = sha3_256.create();
+        const hasher = jssha3.sha3_256.create();
         const hash = hasher.update(Buffer.from(hashInputPayload, 'hex')).hex().toUpperCase();
         res.json({hash});
     } catch (e) {
         res.json({
             hash: "Error",
+        });
+    }
+});
+
+router.get('/uint64/compact', async function(req, res, next) {
+    try {
+        const compact = new nem2Sdk.UInt64([
+            parseInt(req.query.low, 10),
+            parseInt(req.query.high, 10)
+        ]).compact();
+        res.json({compact});
+    } catch (e) {
+        res.json({
+            number: "Error",
+        });
+    }
+});
+
+router.get('/timestamp/decode', async function(req, res, next) {
+    try {
+        const millis = parseInt(req.query.timestamp) + epochTimestamp;
+        res.json({utcString: new Date(millis).toUTCString()});
+    } catch (e) {
+        res.json({
+            utcString: "Error",
+        });
+    }
+});
+
+router.get('/message/decode', async function(req, res, next) {
+    try {
+        const buf = Buffer.from(req.query.payload, 'hex');
+        res.json({decoded: buf.toString('utf8')});
+    } catch (e) {
+        res.json({
+            decoded: "Error",
         });
     }
 });

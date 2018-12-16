@@ -6,13 +6,35 @@ block content
         h4 #{ title }
         .row#o
             .col.s12
-                h5.header UInt64 To
+                h5.header UInt64 To Number
+                .row
+                    .col.s12.m6.input-field
+                        input#o-low.validate(type="text" v-model:value="o_low" ref="o_focus2")
+                        label(for="o-low") Low Part (Dec)
+                    .col.s12.m6.input-field
+                        input#o-high.validate(type="text" v-model:value="o_high" ref="o_focus1")
+                        label(for="o-high") High Part (Dec)
+                div {{ o_number }}
+                div.right-align(v-if="!o_high || !o_low")
+                    button.waves-effect.waves-light.btn(v-on:click="o_sample") sample
         .row#p
             .col.s12
                 h5.header Catapult Timestamp to UTC
+                .input-field
+                    input#p-timestamp.validate(type="text" v-model:value="p_timestamp" ref="p_focus")
+                    label(for="p-timestamp") Catapult Timestamp
+                div {{ p_utc_string }}
+                div.right-align(v-if="!p_timestamp")
+                    button.waves-effect.waves-light.btn(v-on:click="p_sample") sample
         .row#u
             .col.s12
                 h5.header Hex Message Decode
+                .input-field
+                    input#u-payload.validate(type="text" v-model:value="u_payload" ref="u_focus")
+                    label(for="u-payload") Hex Message
+                div {{ u_message_decoded }}
+                div.right-align(v-if="!u_payload")
+                    button.waves-effect.waves-light.btn(v-on:click="u_sample") sample
     include _footer
 
 block script
