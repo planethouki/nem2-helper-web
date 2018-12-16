@@ -2,10 +2,11 @@ var express = require('express');
 var router = express.Router();
 const nem2Sdk = require("nem2-sdk");
 const nem2lib = require("nem2-library");
-const nw = nem2Sdk.NetworkType.MIJIN_TEST;
+const jssha3 = require('js-sha3');
 const rxjs = require("rxjs");
 const op = require("rxjs/operators");
 
+const nw = nem2Sdk.NetworkType.MIJIN_TEST;
 const host = "http://catapult48gh23s.xyz:3000";
 const epochTimestamp = 1459468800000;
 
@@ -140,5 +141,139 @@ router.get('/mosaic', async function(req, res, next) {
         });
     }
 });
+
+router.get('/transaction/hash/decode', async function(req, res, next) {
+    try {
+        const binary = Buffer.from(req.query.hash, 'base64');
+        res.json({
+            decoded: binary.toString('hex').toUpperCase(),
+        });
+    } catch (e) {
+        res.json({
+            decoded: "Error",
+        });
+    }
+});
+
+router.get('/transaction/type', async function(req, res, next) {
+    try {
+        const input = req.query.type;
+        let decTypeFromDec = 0;
+        let decTypeFromHex = 0;
+        let decTypeFromHexRev = 0;
+        const tryParseInt = parseInt(input, 10);
+        if (!isNaN(tryParseInt)) {
+            decTypeFromDec = tryParseInt;
+        }
+        try {
+            const uint8arr = nem2lib.convert.hexToUint8(input);
+            const buf = Buffer.from(uint8arr);
+            decTypeFromHex = buf.readUIntLE(0, uint8arr.length);
+            decTypeFromHexRev = buf.readUIntBE(0, uint8arr.length);
+        } catch (e) {
+
+        }
+        const decType = [decTypeFromDec, decTypeFromHex, decTypeFromHexRev];
+        let typeName = "unknown";
+        for (let i = 0; i < 3; i++) {
+            switch (decType[i]) {
+                case 16724:
+                    typeName = "Transfer transaction";
+                    break;
+                case 16718:
+                    typeName = "Register namespace transaction";
+                    break;
+                case 16717:
+                    typeName = "Mosaic definition transaction";
+                    break;
+                case 16973:
+                    typeName = "Mosaic supply change transaction";
+                    break;
+                case 17229:
+                    typeName = "Mosaic levy change transaction";
+                    break;
+                case 16725:
+                    typeName = "Modify multisig account transaction";
+                    break;
+                case 16705:
+                    typeName = "Aggregate complete transaction";
+                    break;
+                case 16961:
+                    typeName = "Aggregate bonded transaction";
+                    break;
+                case 16716:
+                    typeName = "Hash lock transaction";
+                    break;
+                case 16972:
+                    typeName = "Secret lock transaction";
+                    break;
+                case 17228:
+                    typeName = "Secret proof transaction";
+                    break;
+                case 16720:
+                    typeName = "Account properties address modification transaction";
+                    break;
+                case 16721:
+                    typeName = "Account properties mosaic modification transaction";
+                    break;
+                case 16722:
+                    typeName = "Account properties entity type modification transaction";
+                    break;
+            }
+        }
+        res.json({
+            name: typeName
+        });
+    } catch (e) {
+        res.json({
+            decoded: "Error",
+        });
+    }
+});
+
+router.get('/sha3/512', async function(req, res, next) {
+    try {
+        const sha3_512 = jssha3.sha3_512;
+        const hasher = sha3_512.create();
+        const hash = hasher.update(Buffer.from(req.query.payload, 'hex')).hex().toUpperCase();
+        res.json({hash});
+    } catch (e) {
+        res.json({
+            hash: "Error",
+        });
+    }
+});
+
+router.get('/sha3/256', async function(req, res, next) {
+    try {
+        const sha3_256 = jssha3.sha3_256;
+        const hasher = sha3_256.create();
+        const hash = hasher.update(Buffer.from(req.query.payload, 'hex')).hex().toUpperCase();
+        res.json({hash});
+    } catch (e) {
+        res.json({
+            hash: "Error",
+        });
+    }
+});
+
+router.get('/transaction/hash/payload', async function(req, res, next) {
+    try {
+        const payload = req.query.payload;
+        const hashInputPayload =
+            payload.substr(4*2,32*2) +
+            payload.substr((4+64)*2,32*2) +
+            payload.substr((4+64+32)*2);
+        const sha3_256 = jssha3.sha3_256;
+        const hasher = sha3_256.create();
+        const hash = hasher.update(Buffer.from(hashInputPayload, 'hex')).hex().toUpperCase();
+        res.json({hash});
+    } catch (e) {
+        res.json({
+            hash: "Error",
+        });
+    }
+});
+
 
 module.exports = router;

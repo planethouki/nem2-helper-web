@@ -6,19 +6,49 @@ block content
         h4 #{ title }
         .row#h
             .col.s12
-                h5.header Base64 Hash Decode
+                h5.header Base64 Transaction Hash Decode
+                .input-field
+                    input#h-hash.validate(type="text" v-model:value="h_hash" ref="h_focus")
+                    label(for="h-hash") Base64 Transaction Hash
+                div {{ h_hash_decoded }}
+                div.right-align(v-if="!h_hash")
+                    button.waves-effect.waves-light.btn(v-on:click="h_sample") sample
         .row#i
             .col.s12
                 h5.header Type to Name
+                .input-field
+                    input#i-type.validate(type="text" v-model:value="i_type" ref="i_focus")
+                    label(for="i-type") Type (Dec, Hex LE/BE)
+                div {{ i_type_name }}
+                div.right-align(v-if="!i_type")
+                    button.waves-effect.waves-light.btn(v-on:click="i_sample") sample
         .row#j
             .col.s12
                 h5.header Sha3 256
+                .input-field
+                    input#j-payload.validate(type="text" v-model:value="j_payload" ref="j_focus")
+                    label(for="j-payload") Payload
+                div {{ j_hash }}
+                div.right-align(v-if="!j_payload")
+                    button.waves-effect.waves-light.btn(v-on:click="j_sample") sample
         .row#k
             .col.s12
                 h5.header Sha3 512
+                .input-field
+                    input#k-payload.validate(type="text" v-model:value="k_payload" ref="k_focus")
+                    label(for="k-payload") Payload
+                div {{ k_hash }}
+                div.right-align(v-if="!k_payload")
+                    button.waves-effect.waves-light.btn(v-on:click="k_sample") sample
         .row#l
             .col.s12
                 h5.header Payload to Hash
+                .input-field
+                    input#l-payload.validate(type="text" v-model:value="l_payload" ref="l_focus")
+                    label(for="l-payload") Payload
+                div {{ l_hash }}
+                div.right-align(v-if="!l_payload")
+                    button.waves-effect.waves-light.btn(v-on:click="l_sample") sample
     include _footer
 
 block script
