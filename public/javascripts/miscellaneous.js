@@ -9,6 +9,10 @@ const app = new Vue({
         p_utc_string: '',
         u_payload: '',
         u_message_decoded: '',
+        w_hex: '',
+        w_dec: '',
+        w_result_hex: '',
+        w_result_dec: '',
     },
     methods: {
         o_sample: function() {
@@ -33,7 +37,7 @@ const app = new Vue({
                     high: this.o_high,
                 }});
             this.o_number = response.data.compact;
-        }
+        },
     },
     watch: {
         o_high: async function() {
@@ -49,6 +53,22 @@ const app = new Vue({
         u_payload: async function(newVal) {
             const response = await axios.get('/ajax/message/decode', { params: {payload: newVal}});
             this.u_message_decoded = response.data.decoded;
+        },
+        w_dec: async function() {
+            const num = Number(this.w_dec);
+            if (Number.isSafeInteger(num)) {
+                this.w_result_hex = num.toString(16).toUpperCase();
+            } else {
+                this.w_result_hex = "Error";
+            }
+        },
+        w_hex: async function(newVal) {
+            const num = Number("0x" + newVal);
+            if (Number.isSafeInteger(num)) {
+                this.w_result_dec = num.toString(10);
+            } else {
+                this.w_result_dec = "Error";
+            }
         },
     }
 });

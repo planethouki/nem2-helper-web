@@ -274,14 +274,20 @@ router.get('/transaction/hash/payload', async function(req, res, next) {
 
 router.get('/uint64/compact', async function(req, res, next) {
     try {
-        const compact = new nem2Sdk.UInt64([
-            parseInt(req.query.low, 10),
-            parseInt(req.query.high, 10)
-        ]).compact();
-        res.json({compact});
+        const low = Number(req.query.low, 10);
+        const high = Number(req.query.high, 10);
+        if (isNaN(low) || isNaN(high)) {
+            throw Error();
+        }
+        const compact = new nem2Sdk.UInt64([low, high]).compact();
+        if (Number.isSafeInteger(compact)) {
+            res.json({compact});
+        } else {
+            res.json({compact: "Too Big"});
+        }
     } catch (e) {
         res.json({
-            number: "Error",
+            compact: "Error",
         });
     }
 });
