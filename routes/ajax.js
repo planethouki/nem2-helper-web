@@ -10,6 +10,13 @@ const nw = nem2Sdk.NetworkType.MIJIN_TEST;
 const host = "http://catapult48gh23s.xyz:3000";
 const epochTimestamp = 1459468800000;
 
+const endpoints = {
+    "planet": "http://catapult48gh23s.xyz:3000",
+    "44uk": "http://catapult-test.44uk.net:3000",
+    "daoka": "http://catapult-test.daoka.ml:3000",
+    "soralis": "http://catapult-test.soralis.org:3000"
+};
+
 router.post('/privkey', async function(req, res, next) {
     try {
         const ac = nem2Sdk.Account.createFromPrivateKey(req.body.privkey, nw);
@@ -310,6 +317,62 @@ router.get('/message/decode', async function(req, res, next) {
     } catch (e) {
         res.json({
             decoded: "Error",
+        });
+    }
+});
+
+router.get('/address/balance', async function(req, res, next) {
+    try {
+        const address = nem2Sdk.Address.createFromRawAddress(req.query.address);
+        const endpoint = endpoints[req.query.endpoint];
+
+        const accountHttp = new nem2Sdk.AccountHttp(endpoint);
+        const mosaicHttp = new nem2Sdk.MosaicHttp(endpoint);
+        const nameSpaceHttp = new nem2Sdk.NamespaceHttp(endpoint);
+        const mosaicService = new nem2Sdk.MosaicService(accountHttp, mosaicHttp, nameSpaceHttp);
+        const mosaics = await new Promise((resolve, reject) => {
+            const ownedMosaics = [];
+            accountHttp.getAccountInfo(address).pipe(
+                op.mergeMap(accountInfo => {
+                    const mosaics = accountInfo.mosaics.length !== 0 ? accountInfo.mosaics : [nem2Sdk.XEM.createAbsolute(0)];
+                    return mosaicService.mosaicsAmountView(mosaics);
+                }),
+                op.flatMap((_) => _),
+            ).subscribe(
+                function(mosaicAmountView) {
+                    // console.log(mosaicAmountView)
+                    // const mosaicData = {
+                    //     namespace: mosaicAmountView.namespaceName,
+                    //     mosaic: mosaicAmountView.mosaicName,
+                    //     amount: mosaicAmountView.amount.compact(),
+                    //     divisibility: mosaicAmountView.mosaicInfo.properties.divisibility
+                    // };
+                    const divisibility = mosaicAmountView.mosaicInfo.properties.divisibility;
+                    const amount = mosaicAmountView.amount.compact();
+                    let relAmount = amount / (10 ** divisibility);
+                    const mosaicData = mosaicAmountView.namespaceName +
+                        ":" +
+                        mosaicAmountView.mosaicName +
+                        "::" +
+                        amount.toString(10) +
+                        " (" +
+                        relAmount.toString(10) +
+                        ") ";
+                    ownedMosaics.push(mosaicData);
+                },
+                function() {
+                    resolve(ownedMosaics);
+                },
+                function() {
+                    resolve(ownedMosaics);
+                }
+            );
+        });
+        res.json({mosaics});
+
+    } catch (e) {
+        res.json({
+            mosaics: "Error"
         });
     }
 });
