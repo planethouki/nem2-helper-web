@@ -21,7 +21,8 @@ block content
                     button.waves-effect.waves-light.btn(v-on:click="s_sample") sample
         .row#q
             .col.s12
-                h5.header Your Namespace List
+                h5.header Your Namespace List &nbsp;
+                    small (max 10)
                 .input-field
                     input#q-address.validate(type="text" v-model:value="q_address" ref="q_focus")
                     label(for="q-address") Address
@@ -30,7 +31,8 @@ block content
                     button.waves-effect.waves-light.btn(v-on:click="q_sample") sample
         .row#r
             .col.s12
-                h5.header Namespace attached Mosaic List
+                h5.header Namespace attached Mosaic List &nbsp;
+                    small (max 10)
                 .input-field
                     input#r-namespace.validate(type="text" v-model:value="r_namespace" ref="r_focus")
                     label(for="r-namespace") Namespace

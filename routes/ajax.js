@@ -334,19 +334,12 @@ router.get('/address/balance', async function(req, res, next) {
             const ownedMosaics = [];
             accountHttp.getAccountInfo(address).pipe(
                 op.mergeMap(accountInfo => {
-                    const mosaics = accountInfo.mosaics.length !== 0 ? accountInfo.mosaics : [nem2Sdk.XEM.createAbsolute(0)];
-                    return mosaicService.mosaicsAmountView(mosaics);
+                    const mosaicsWithZeroXEM = accountInfo.mosaics.length !== 0 ? accountInfo.mosaics : [nem2Sdk.XEM.createAbsolute(0)];
+                    return mosaicService.mosaicsAmountView(mosaicsWithZeroXEM);
                 }),
                 op.flatMap((_) => _),
             ).subscribe(
                 function(mosaicAmountView) {
-                    // console.log(mosaicAmountView)
-                    // const mosaicData = {
-                    //     namespace: mosaicAmountView.namespaceName,
-                    //     mosaic: mosaicAmountView.mosaicName,
-                    //     amount: mosaicAmountView.amount.compact(),
-                    //     divisibility: mosaicAmountView.mosaicInfo.properties.divisibility
-                    // };
                     const divisibility = mosaicAmountView.mosaicInfo.properties.divisibility;
                     const amount = mosaicAmountView.amount.compact();
                     let relAmount = amount / (10 ** divisibility);
@@ -361,7 +354,7 @@ router.get('/address/balance', async function(req, res, next) {
                     ownedMosaics.push(mosaicData);
                 },
                 function() {
-                    resolve(ownedMosaics);
+                    resolve([]);
                 },
                 function() {
                     resolve(ownedMosaics);
@@ -373,6 +366,41 @@ router.get('/address/balance', async function(req, res, next) {
     } catch (e) {
         res.json({
             mosaics: "Error"
+        });
+    }
+});
+
+
+router.get('/address/namespaces', async function(req, res, next) {
+    try {
+        const address = nem2Sdk.Address.createFromRawAddress(req.query.address);
+        const endpoint = endpoints[req.query.endpoint];
+
+        const nameSpaceHttp = new nem2Sdk.NamespaceHttp(endpoint);
+        const namespaces = await new Promise((resolve, reject) => {
+            nameSpaceHttp.getNamespacesFromAccount(address).pipe(
+                op.mergeMap(namespaceInfoArr => {
+                    // console.log(namespaceInfoArr);
+                    if (namespaceInfoArr.length === 0) {
+                        return rxjs.throwError(new Error());
+                    }
+                    return namespaceInfoArr.map(nif => nif.id).map(nsId => nameSpaceHttp.getNamespacesName([nsId]));
+                }),
+                op.combineAll()
+            ).subscribe(namespaceNames => {
+                // console.log(namespaceNames);
+                const data = namespaceNames.map(nsLevel => nsLevel.map(n => n.name).reverse().join("."));
+                resolve(data);
+            }, error => {
+                resolve([]);
+            });
+        });
+        res.json({namespaces});
+
+    } catch (e) {
+        console.error(e);
+        res.json({
+            namespaces: "Error"
         });
     }
 });

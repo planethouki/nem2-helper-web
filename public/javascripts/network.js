@@ -48,5 +48,9 @@ const app = new Vue({
             const response = await axios.get('/ajax/address/balance', { params: {address: newVal, endpoint: this.endpointSelection}});
             this.s_mosaics = response.data.mosaics;
         },
+        q_address: async function(newVal) {
+            const response = await axios.get('/ajax/address/namespaces', { params: {address: newVal, endpoint: this.endpointSelection}});
+            this.q_namespaces = response.data.namespaces;
+        },
     }
 });
