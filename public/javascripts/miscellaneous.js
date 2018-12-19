@@ -10,7 +10,11 @@ const app = new Vue({
         u_payload: '',
         u_message_decoded: '',
         w_hex: '',
+        w_hex_to_dec: '',
         w_dec: '',
+        w_dec_to_hex: '',
+        x_payload: '',
+        x_payload_converted: '',
     },
     methods: {
         o_sample: function() {
@@ -28,6 +32,10 @@ const app = new Vue({
         u_sample: function() {
             this.u_payload = '48656C6C6F204E656D3221';
             this.$refs.u_focus.focus();
+        },
+        x_sample: function() {
+            this.x_payload = '48656C6C6F204E656D3221';
+            this.$refs.x_focus.focus();
         },
         o_func: async function() {
             const response = await axios.get('/ajax/uint64/compact', { params: {
@@ -57,17 +65,25 @@ const app = new Vue({
             if (Number.isSafeInteger(num)) {
                 const rowHex = num.toString(16).toUpperCase();
                 if (rowHex.length % 2 === 0) {
-                    this.w_hex = rowHex;
+                    this.w_dec_to_hex = rowHex;
                 } else {
-                    this.w_hex = "0" + rowHex;
+                    this.w_dec_to_hex = "0" + rowHex;
                 }
+            } else {
+                this.w_dec_to_hex = "Error";
             }
         },
         w_hex: async function(newVal, oldVal) {
             const num = Number("0x" + newVal);
             if (Number.isSafeInteger(num)) {
-                this.w_dec = num.toString(10);
+                this.w_hex_to_dec = num.toString(10);
+            } else {
+                this.w_hex_to_dec = "Error";
             }
         },
+        x_payload: async function(newVal) {
+            const response = await axios.get('/ajax/endian/convert', { params: {payload: newVal}});
+            this.x_payload_converted = response.data.converted;
+        }
     }
 });

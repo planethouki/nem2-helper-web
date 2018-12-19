@@ -321,6 +321,17 @@ router.get('/message/decode', async function(req, res, next) {
     }
 });
 
+router.get('/endian/convert', async function(req, res, next) {
+    try {
+        const uint8arr = nem2lib.convert.hexToUint8(req.query.payload);
+        res.json({converted: nem2lib.convert.uint8ToHex(uint8arr.reverse())});
+    } catch (e) {
+        res.json({
+            converted: "Error",
+        });
+    }
+});
+
 router.get('/address/balance', async function(req, res, next) {
     try {
         const address = nem2Sdk.Address.createFromRawAddress(req.query.address);

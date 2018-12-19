@@ -11,12 +11,20 @@ block content
                     .col.s12.m6.input-field
                         input#w-hex.validate(type="text" v-model:value="w_hex")
                         label(for="w-hex") Hex
+                        div {{ w_hex_to_dec }}
                     .col.s12.m6.input-field
                         input#w-dec.validate(type="text" v-model:value="w_dec")
                         label(for="w-dec") Dec
+                        div {{ w_dec_to_hex }}
         .row#x
             .col.s12
                 h5.header BigEndian / LittleEndian
+                .input-field
+                    input#x-payload.validate(type="text" v-model:value="x_payload" ref="x_focus")
+                    label(for="x-payload") Payload
+                div {{ x_payload_converted }}
+                div.right-align(v-if="!x_payload")
+                    button.waves-effect.waves-light.btn(v-on:click="x_sample") sample
         .row#o
             .col.s12
                 h5.header UInt64 To Number
