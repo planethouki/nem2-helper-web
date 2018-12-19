@@ -36,9 +36,27 @@ const app = new Vue({
             this.$refs.r_focus.focus();
         },
         t_sample: function() {
-            this.t_address = 'SCA7ZS-2B7DEE-BGU3TH-SILYHC-RUR32Y-YE55ZB-LYA2';
+            this.t_address = 'SAG2ZE-35OZ6B-LCFU7B-G7ZG3A-5CI3RM-4G5STL-7WB6';
             this.$refs.t_focus.focus();
         },
+        t_draw: function(graph) {
+            google.charts.load('current', {packages:["orgchart"]});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Name');
+                data.addColumn('string', 'Manager');
+                data.addColumn('string', 'ToolTip');
+                data.addRows(graph);
+                var chart = new google.visualization.OrgChart(document.getElementById('t-chart'));
+                chart.draw(data, {
+                    allowHtml:true,
+                    nodeClass:"t-nodeClass",
+                    selectedNodeClass:"t-selectedNodeClass",
+                });
+            }
+        }
     },
     watch: {
         endpointSelection: function(newVal) {
@@ -51,6 +69,14 @@ const app = new Vue({
         q_address: async function(newVal) {
             const response = await axios.get('/ajax/address/namespaces', { params: {address: newVal, endpoint: this.endpointSelection}});
             this.q_namespaces = response.data.namespaces;
+        },
+        r_namespace: async function(newVal) {
+            const response = await axios.get('/ajax/namespace/mosaics', { params: {namespace: newVal, endpoint: this.endpointSelection}});
+            this.r_mosaics = response.data.mosaics;
+        },
+        t_address: async function(newVal) {
+            const response = await axios.get('/ajax/address/multisig/graph', { params: {address: newVal, endpoint: this.endpointSelection}});
+            this.t_draw(response.data.graph);
         },
     }
 });

@@ -405,5 +405,91 @@ router.get('/address/namespaces', async function(req, res, next) {
     }
 });
 
+router.get('/namespace/mosaics', async function(req, res, next) {
+    try {
+        const namespaceId = new nem2Sdk.NamespaceId(req.query.namespace);
+        const endpoint = endpoints[req.query.endpoint];
+
+        const accountHttp = new nem2Sdk.AccountHttp(endpoint);
+        const mosaicHttp = new nem2Sdk.MosaicHttp(endpoint);
+        const nameSpaceHttp = new nem2Sdk.NamespaceHttp(endpoint);
+        const mosaicService = new nem2Sdk.MosaicService(accountHttp, mosaicHttp, nameSpaceHttp);
+        const mosaics = await new Promise((resolve, reject) => {
+            mosaicHttp.getMosaicsFromNamespace(namespaceId).pipe(
+                op.mergeMap(mosaicInfoArr => {
+                    // console.log(mosaicInfoArr);
+                    if (mosaicInfoArr.length === 0) {
+                        return rxjs.throwError(new Error());
+                    }
+                    return mosaicService.mosaicsView(mosaicInfoArr.map(mif => mif.mosaicId));
+                }),
+            ).subscribe(mosaisViews => {
+                // console.log(mosaisViews);
+                const data = mosaisViews.map(mv => mv.fullName());
+                resolve(data);
+            }, error => {
+                resolve([]);
+            });
+        });
+        res.json({mosaics});
+    } catch (e) {
+        console.error(e);
+        res.json({
+            mosaics: "Error"
+        });
+    }
+});
+
+router.get('/address/multisig/graph', async function(req, res, next) {
+    try {
+        const address = nem2Sdk.Address.createFromRawAddress(req.query.address);
+        const endpoint = endpoints[req.query.endpoint];
+        const accountHttp = new nem2Sdk.AccountHttp(endpoint);
+
+        const graph = await new Promise((resolve, reject) => {
+            const graphData = [];
+            accountHttp.getMultisigAccountGraphInfo(address).subscribe(multisigAccountGraphInfo => {
+                console.log(multisigAccountGraphInfo);
+                multisigAccountGraphInfo.multisigAccounts.forEach((value, key, map) => {
+                    console.log(value);
+                    if (key === 0) {
+                        value.map(multisigAccountInfo => {
+                            graphData.push([
+                                {v:multisigAccountInfo.account.publicKey.concat("-0"), f:multisigAccountInfo.account.publicKey},
+                                '',
+                                multisigAccountInfo.account.address.pretty(),
+                            ]);
+                            multisigAccountInfo.cosignatories.map(publicAccount => {
+                                graphData.push([
+                                    {v:publicAccount.publicKey.concat("-1"), f:publicAccount.publicKey},
+                                    multisigAccountInfo.account.publicKey.concat("-0"),
+                                    publicAccount.address.pretty(),
+                                ]);
+                            });
+                        });
+                    } else {
+                        value.map(multisigAccountInfo => {
+                            multisigAccountInfo.cosignatories.map(publicAccount => {
+                                graphData.push([
+                                    {v:publicAccount.publicKey.concat(`-${key-1}`), f:publicAccount.publicKey},
+                                    multisigAccountInfo.account.publicKey.concat(`-${key}`),
+                                    publicAccount.address.pretty(),
+                                ]);
+                            });
+                        });
+                    }
+                });
+                // console.log(graph);
+                resolve(graphData);
+            });
+        });
+        res.json({graph});
+
+    } catch (e) {
+        res.json({
+            graph: "Error"
+        });
+    }
+});
 
 module.exports = router;

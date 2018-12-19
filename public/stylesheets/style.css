@@ -5,3 +5,15 @@
 ._margin-bottom20 {
   margin-bottom: 20px;
 }
+
+
+#t-chart .t-nodeClass {
+  word-break : break-all;
+  border: 1px solid black;
+}
+
+#t-chart .t-selectedNodeClass {
+  word-break : break-all;
+  border: 1px solid black;
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+}

@@ -48,7 +48,9 @@ block content
                 div {{ t_multisig_graph }}
                 div.right-align(v-if="!t_address")
                     button.waves-effect.waves-light.btn(v-on:click="t_sample") sample
+                div#t-chart
     include _footer
 
 block script
+    script(src="https://www.gstatic.com/charts/loader.js")
     script(src="javascripts/network.js")
