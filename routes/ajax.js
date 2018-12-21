@@ -7,7 +7,6 @@ const rxjs = require("rxjs");
 const op = require("rxjs/operators");
 
 const nw = nem2Sdk.NetworkType.MIJIN_TEST;
-const host = "http://catapult48gh23s.xyz:3000";
 const epochTimestamp = 1459468800000;
 
 const endpoints = {
