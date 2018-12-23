@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "node-dev ./bin/www",
-    "test": "mocha --ui bdd --recursive ./test --timeout 1000"
+    "test": "mocha --ui bdd --recursive ./test --timeout 120000"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
