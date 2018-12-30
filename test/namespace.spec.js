@@ -4,7 +4,7 @@ const fs = require('fs');
 const chai = require('chai');
 
 
-describe('miscellaneous', function() {
+describe('namespace', function() {
 
 
 });

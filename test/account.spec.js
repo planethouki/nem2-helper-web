@@ -72,4 +72,56 @@ describe('account', function() {
         });
     }
 
+    it('GET /address/plain', function(done) {
+        request(app)
+            .get('/ajax/address/plain')
+            .query({ address: "SCA7ZS-2B7DEE-BGU3TH-SILYHC-RUR32Y-YE55ZB-LYA2"})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect(res => {
+                chai.expect(res.body).to.include({addressPlain: "SCA7ZS2B7DEEBGU3THSILYHCRUR32YYE55ZBLYA2"})
+            }).then(() => {
+                done();
+            });
+    });
+
+    it('GET /address/encode', function(done) {
+        request(app)
+            .get('/ajax/address/encode')
+            .query({ address: "9081FCCB41F8C8409A9B99E485E0E28D23BD6304EF7215E01A"})
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect(res => {
+                chai.expect(res.body).to.include(
+                    {addressPlain: "SCA7ZS2B7DEEBGU3THSILYHCRUR32YYE55ZBLYA2", addressPretty: "SCA7ZS-2B7DEE-BGU3TH-SILYHC-RUR32Y-YE55ZB-LYA2"})
+            }).then(() => {
+                done();
+            });
+    });
+
+    it('GET /address/decode', function(done) {
+        Promise.all([
+            request(app)
+                .get('/ajax/address/decode')
+                .query({ address: "SCA7ZS2B7DEEBGU3THSILYHCRUR32YYE55ZBLYA2"})
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .expect(res => {
+                    chai.expect(res.body).to.include(
+                        {address: "9081FCCB41F8C8409A9B99E485E0E28D23BD6304EF7215E01A"})
+                }),
+            request(app)
+                .get('/ajax/address/decode')
+                .query({ address: "SCA7ZS-2B7DEE-BGU3TH-SILYHC-RUR32Y-YE55ZB-LYA2"})
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .expect(res => {
+                    chai.expect(res.body).to.include(
+                        {address: "9081FCCB41F8C8409A9B99E485E0E28D23BD6304EF7215E01A"})
+                })
+        ]).then(() => {
+            done();
+        });
+    });
+
 });
