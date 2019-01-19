@@ -211,19 +211,25 @@ router.get('/transaction/type', async function(req, res, next) {
                 case 16716:
                     typeName = "Hash lock transaction";
                     break;
+                case 16722:
+                    typeName = "Secret lock transaction (bison)";
+                    break;
                 case 16972:
-                    typeName = "Secret lock transaction";
+                    typeName = "Secret lock transaction (alpaca)";
+                    break;
+                case 16978:
+                    typeName = "Secret proof transaction (bison)";
                     break;
                 case 17228:
-                    typeName = "Secret proof transaction";
+                    typeName = "Secret proof transaction (alpaca)";
                     break;
                 case 16720:
                     typeName = "Account properties address modification transaction";
                     break;
-                case 16721:
+                case 16976:
                     typeName = "Account properties mosaic modification transaction";
                     break;
-                case 16722:
+                case 17232:
                     typeName = "Account properties entity type modification transaction";
                     break;
             }
