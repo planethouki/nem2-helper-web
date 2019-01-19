@@ -149,9 +149,9 @@ router.get('/mosaic', async function(req, res, next) {
     }
 });
 
-router.get('/transaction/hash/decode', async function(req, res, next) {
+router.get('/base64/decode', async function(req, res, next) {
     try {
-        const binary = Buffer.from(req.query.hash, 'base64');
+        const binary = Buffer.from(req.query.payload, 'base64');
         res.json({
             decoded: binary.toString('hex').toUpperCase(),
         });
