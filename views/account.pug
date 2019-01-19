@@ -78,6 +78,15 @@ block content
                 div {{ n_result }}
                 div.right-align(v-if="!n_signature || !n_public_key")
                     button.waves-effect.waves-light.btn(v-on:click="n_sample") sample
+        .row#y
+            .col.s12
+                h5.header Base64 Address Decode
+                .input-field
+                    input#h-hash.validate(type="text" v-model:value="y_address" ref="y_focus")
+                    label(for="h-hash") Base64 Address
+                div {{ y_address_decoded }}
+                div.right-align(v-if="!y_address")
+                    button.waves-effect.waves-light.btn(v-on:click="y_sample") sample
     include _footer
 
 block script
