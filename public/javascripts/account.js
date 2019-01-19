@@ -20,7 +20,9 @@ const app = new Vue({
         n_signature: '',
         n_public_key: '',
         n_data: '',
-        n_result: ''
+        n_result: '',
+        y_address: '',
+        y_address_decoded: ''
     },
     methods: {
         a_sample: function() {
@@ -77,7 +79,11 @@ const app = new Vue({
                 data: this.n_data
             }});
             this.n_result = response.data.result;
-        }
+        },
+        y_sample: function() {
+            this.y_address = 'kCLZ5eQKN2n8TJqEGSpHdxJt9Wp83ciA2Q==';
+            this.$refs.y_focus.focus();
+        },
     },
     watch: {
         a_privateKey: async function(newVal) {
@@ -116,6 +122,10 @@ const app = new Vue({
         },
         n_data: async function() {
             this.n_func();
+        },
+        y_address: async function(newVal) {
+            const response = await axios.get('/ajax/base64/decode', { params: {payload: newVal}});
+            this.y_address_decoded = response.data.decoded;
         },
     }
 });

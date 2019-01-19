@@ -37,7 +37,7 @@ const app = new Vue({
     },
     watch: {
         h_hash: async function(newVal) {
-            const response = await axios.get('/ajax/transaction/hash/decode', { params: {hash: newVal}});
+            const response = await axios.get('/ajax/base64/decode', { params: {payload: newVal}});
             this.h_hash_decoded = response.data.decoded;
         },
         i_type: async function(newVal) {
