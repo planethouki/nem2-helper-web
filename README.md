@@ -14,3 +14,10 @@ npm start
 ```
 
 then, open browser and access to http://localhost:3000.
+
+## Version
+
+- v0.0.1 - alpaca
+- v0.0.2 - cow
+
+## 
