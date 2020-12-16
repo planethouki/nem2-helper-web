@@ -14,11 +14,11 @@ router.post('/node', async function(req, res, next) {
         if (!host) throw new Error("invalid host");
         if (!port) throw new Error("invalid port");
 
-        const nodeInfo = await lib.nodeInfo(host, Number(port));
+        const { nodeInfo } = await lib.nodeInfo(host, Number(port));
 
         res.json({ info: nodeInfo, message: "success" });
     } catch (e) {
-        res.json({ info: "", message: e.message });
+        res.json({ message: e.message });
     }
 });
 

@@ -4,7 +4,7 @@
   "version": "0.0.3",
   "private": true,
   "engines": {
-    "node": "10.14.1"
+    "node": "14.10.1"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "morgan": "~1.10.0",
     "pug": "^3.0.0",
     "rxjs": "^6.6.3",
+    "sshpk": "^1.16.1",
     "symbol-sdk": "^0.22.2",
     "utf8": "^3.0.0"
   },

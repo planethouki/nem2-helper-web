@@ -1,4 +1,5 @@
 const tls = require('tls');
+const sshpk = require('sshpk');
 
 async function nodeConnection(host, port, sendData) {
     const contextOptions = {
@@ -77,8 +78,20 @@ function nodeInfoParser(buffer) {
  */
 async function nodeInfo(host, port) {
     const sendData = "0800000011010000";
-    const { buffer } = await nodeConnection(host, port, sendData);
-    return nodeInfoParser(buffer);
+    const { buffer, cert } = await nodeConnection(host, port, sendData);
+    return {
+        nodeInfo: {
+            ...nodeInfoParser(buffer),
+            nodePublicKey: sshpk
+                .parseCertificate(cert.raw, 'x509')
+                .subjectKey
+                .part
+                .A
+                .data
+                .toString('hex')
+                .toUpperCase()
+        }
+    };
 }
 
 module.exports = {
