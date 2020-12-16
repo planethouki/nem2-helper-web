@@ -59,6 +59,7 @@ new Vue({
     },
     methods: {
         getNodeInfo() {
+            this.data = "";
             this.message = "fetching...";
             const interval = setInterval(() => {
                 this.message = this.message + ".";
