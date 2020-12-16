@@ -1,6 +1,6 @@
 # nem2-helper-web
 
-NEM2 Useful Tools. (mijin-test only)
+NEM2 Useful Tools.
 
 Node.js Express Application.
 
@@ -19,5 +19,4 @@ then, open browser and access to http://localhost:3000.
 
 - v0.0.1 - alpaca
 - v0.0.2 - cow
-
-## 
+- v0.0.3 - 0.10.0.3 symbol testnet

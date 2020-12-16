@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('account', { title: 'Account' });
+    res.render('index');
 });
 
 router.get('/namespace', function(req, res, next) {

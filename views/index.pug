@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    include _header
+    main.container#app
+        section#a-account
+            h4 Account
+            .row
+                .col.s12
+                    .input-field
+                        input#a-private-key.validate(type="text" v-model="privateKey")
+                        label(for="a-private-key") Private Key
+                    div(style="white-space: pre-wrap;") {{ JSON.stringify({ publicKey, address }, null, "  ") }}
+        section#n-node
+            h4 Node
+            .row
+                .col.s12
+                    .input-field
+                        input#n-private-key.validate(type="text" v-model="url")
+                        label(for="a-private-key") Node (host:port)
+                    div
+                        a.waves-effect.waves-light.btn(@click="debouncedGetNodeInfo") get
+            .row
+                .col.s12(style="white-space: pre-wrap;") {{ JSON.stringify(data, null, "  ") }}
+
+
+    include _footer
+
+block script
+    script(src="javascripts/index.js")
