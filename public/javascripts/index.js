@@ -16,6 +16,12 @@ new Vue({
                 console.error(e);
                 return "invalid private key";
             }
+        },
+        data() {
+            return YAML.stringify({
+                publicKey: this.publicKey,
+                address: this.address
+            })
         }
     },
     created() {
@@ -45,18 +51,30 @@ new Vue({
     el: '#n-node',
     data: {
         url: "beacon-01.ap-southeast-1.0.10.0.x.symboldev.network:7900",
-        data: {}
-    },
-    computed: {
+        data: "",
+        message: ""
     },
     created() {
         this.debouncedGetNodeInfo = _.debounce(this.getNodeInfo, 500)
     },
     methods: {
         getNodeInfo() {
+            this.message = "fetching...";
+            const interval = setInterval(() => {
+                this.message = this.message + ".";
+            }, 1000);
             axios.post("/node", { url: this.url })
                 .then((res) => {
-                    this.data = res.data;
+                    this.data = YAML.stringify(res.data.info);
+                    this.message = "";
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.data = "";
+                    this.message = e.data.message;
+                })
+                .finally(() => {
+                    clearInterval(interval);
                 });
         }
     }

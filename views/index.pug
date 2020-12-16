@@ -10,7 +10,7 @@ block content
                     .input-field
                         input#a-private-key.validate(type="text" v-model="privateKey")
                         label(for="a-private-key") Private Key
-                    div(style="white-space: pre-wrap;") {{ JSON.stringify({ publicKey, address }, null, "  ") }}
+                    pre {{ data }}
         section#n-node
             h4 Node
             .row
@@ -21,7 +21,9 @@ block content
                     div
                         a.waves-effect.waves-light.btn(@click="debouncedGetNodeInfo") get
             .row
-                .col.s12(style="white-space: pre-wrap;") {{ JSON.stringify(data, null, "  ") }}
+                .col.s12
+                    pre {{ data }}
+                    div {{ message }}
 
 
     include _footer
