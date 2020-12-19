@@ -70,6 +70,17 @@ function nodeInfoParser(buffer) {
     return nodeInfo;
 }
 
+function nodeCertParser(cert) {
+    return sshpk
+        .parseCertificate(cert.raw, 'x509')
+        .subjectKey
+        .part
+        .A
+        .data
+        .toString('hex')
+        .toUpperCase();
+}
+
 /**
  *
  * @param host
@@ -79,21 +90,20 @@ function nodeInfoParser(buffer) {
 async function nodeInfo(host, port) {
     const sendData = "0800000011010000";
     const { buffer, cert } = await nodeConnection(host, port, sendData);
+    console.log(buffer.toString('hex').toUpperCase())
     return {
         nodeInfo: {
             ...nodeInfoParser(buffer),
-            nodePublicKey: sshpk
-                .parseCertificate(cert.raw, 'x509')
-                .subjectKey
-                .part
-                .A
-                .data
-                .toString('hex')
-                .toUpperCase()
+            nodePublicKey:nodeCertParser(cert)
         }
     };
 }
 
 module.exports = {
-    nodeInfo
+    nodeInfo,
+    test: {
+        nodeConnection,
+        nodeInfoParser,
+        nodeCertParser
+    }
 }
