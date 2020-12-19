@@ -4,24 +4,35 @@ new Vue({
     el: '#a-account',
     data: {
         privateKey: "25B3F54217340F7061D02676C4B928ADB4395EB70A2A52D2A11E2F4AE011B03E",
-        address: ""
+        address: "",
+        hexAddress: "",
+        hexAddressSha3: ""
     },
     computed: {
         publicKey() {
             try {
+                if (this.privateKey.length === 0) {
+                    return ""
+                }
                 const privateKey = utils.hexToUint8Array(this.privateKey);
                 const { publicKey } = nacl.sign.keyPair.fromSeed(privateKey);
                 return utils.uint8ArrayToHex(publicKey).toUpperCase();
             } catch (e) {
                 console.error(e);
-                return "invalid private key";
+                return "";
             }
         },
         data() {
             return YAML.stringify({
                 publicKey: this.publicKey,
-                address: this.address
+                addressPlain: this.address,
+                addressPretty: utils.plainToPretty(this.address),
+                hexAddress: this.hexAddress,
+                hexAddressSha3: this.hexAddressSha3
             })
+        },
+        isDataHidden() {
+            return this.publicKey.length === 0;
         }
     },
     created() {
@@ -36,9 +47,20 @@ new Vue({
     methods: {
         getAddress() {
             try {
+                if (this.publicKey.length === 0) {
+                    this.address = "";
+                    this.hexAddress = "";
+                    this.hexAddressSha3 = "";
+                    return;
+                }
                 utils.publicKeyToHexAddress(this.publicKey)
                     .then((hexAddress) => {
-                        this.address = utils.getBase32EncodeAddress(hexAddress)
+                        this.hexAddress = hexAddress;
+                        this.address = utils.getBase32EncodeAddress(hexAddress);
+                        return utils.sha3(this.hexAddress);
+                    })
+                    .then((hexAddressSha3) => {
+                        this.hexAddressSha3 = hexAddressSha3;
                     });
             } catch (e) {
                 this.address = "invalid private key";

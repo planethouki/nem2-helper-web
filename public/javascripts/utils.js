@@ -168,6 +168,27 @@
         return b.substr(0, 39)
     }
 
+    /**
+     *
+     * @param plainAddress
+     * @return {string}
+     */
+    function plainToPretty(plainAddress) {
+        const textArray = [];
+        for (let i = 0; i < plainAddress.length; i++) {
+            textArray.push(plainAddress.charAt(i));
+            if ((i + 1) % 6 === 0) {
+                textArray.push("-");
+            }
+        }
+        return textArray.join("");
+    }
+
+    async function sha3(hex) {
+        const a = await hashwasm.sha3(hexToUint8Array(hex), 256);
+        return a.toUpperCase();
+    }
+
     window.utils = {
         endian,
         uint8ArrayToHex,
@@ -175,6 +196,8 @@
         publicKeyToHexAddress,
         getTransactionHash,
         getBase32DecodeAddress,
-        getBase32EncodeAddress
+        getBase32EncodeAddress,
+        plainToPretty,
+        sha3
     }
 })();

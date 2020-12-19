@@ -10,7 +10,8 @@ block content
                     .input-field
                         input#a-private-key.validate(type="text" v-model="privateKey")
                         label(for="a-private-key") Private Key
-                    pre {{ data }}
+                    pre(v-if="!isDataHidden") {{ data }}
+
         section#n-node
             h4 Node
             .row
