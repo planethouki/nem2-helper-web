@@ -89,7 +89,7 @@ new Vue({
             axios.post("/node", { url: this.url })
                 .then((res) => {
                     this.data = YAML.stringify(res.data.info);
-                    this.message = "";
+                    this.message = this.data === "null" ? res.data : "";
                 })
                 .catch((e) => {
                     console.error(e);
