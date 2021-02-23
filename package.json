@@ -1,7 +1,7 @@
 {
   "name": "nem2-helper-web",
   "description": "NEM2 helper web application",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "engines": {
     "node": "14.10.1"
