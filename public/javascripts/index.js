@@ -72,7 +72,7 @@ new Vue({
 new Vue({
     el: '#n-node',
     data: {
-        url: "beacon-01.ap-southeast-1.0.10.0.x.symboldev.network:7900",
+        url: "beacon-01.ap-northeast-1.testnet.symboldev.network:7900",
         data: "",
         message: ""
     },
