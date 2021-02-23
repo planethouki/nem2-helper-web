@@ -94,7 +94,13 @@ new Vue({
                 .catch((e) => {
                     console.error(e);
                     this.data = "";
-                    this.message = e.data.message;
+                    if (error.response) {
+                        this.message = e.response.data;
+                    } else if (error.request) {
+                        this.message = e.request;
+                    } else {
+                        this.message = e.message;
+                    }
                 })
                 .finally(() => {
                     clearInterval(interval);
