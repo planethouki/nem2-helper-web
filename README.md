@@ -20,6 +20,7 @@ then, open browser and access to http://localhost:3000.
 - v0.0.1 - alpaca
 - v0.0.2 - cow
 - v0.0.3 - 0.10.0.3 symbol testnet
+- v0.0.4 - 0.10.0.7 symbol testnet
 
 ## Demo
 
