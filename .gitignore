@@ -1,6 +1,14 @@
-/node_modules
+node_modules
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
+.DS_Store
+
 /.idea
 /.vscode
 npm-debug.log
-.DS_Store
 /*.env
