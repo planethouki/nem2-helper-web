@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -53,5 +55,22 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /node_modules[\\/]symbol-sdk[\\/].*\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      });
+    },
+    plugins: [
+      new webpack.NormalModuleReplacementPlugin(
+        /symbol-crypto-wasm-node/,
+        '../../../symbol-crypto-wasm-web/symbol_crypto_wasm.js'
+      ),
+    ]
   }
 }
