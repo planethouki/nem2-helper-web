@@ -2,7 +2,7 @@
 
 NEM2 Useful Tools.
 
-Node.js Express Application.
+Nuxt.js Application.
 
 ## Version
 
@@ -11,10 +11,11 @@ Node.js Express Application.
 - v0.0.3 - 0.10.0.3 symbol testnet
 - v0.0.4 - 0.10.0.7 symbol testnet
 - v0.1.0
+- v1.0.0 - 1.0.3.6 symbol mainnet/testnet 
 
 ## Demo
 
-https://helper48gh23s.azurewebsites.net
+https://helper.48gh23s.xyz
 
 
 
