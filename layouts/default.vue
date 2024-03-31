@@ -11,7 +11,6 @@
           <b-nav-item to="/nsmosaic">NS & Mosaic</b-nav-item>
           <b-nav-item to="/transaction">Transaction</b-nav-item>
           <b-nav-item to="/others">Others</b-nav-item>
-          <b-nav-item to="/network">Network</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
