@@ -15,8 +15,10 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-          </b-nav-form>
+          <b-nav-item
+            href="https://github.com/planethouki/nem2-helper-web"
+            target="_blank"
+          >GitHub</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
