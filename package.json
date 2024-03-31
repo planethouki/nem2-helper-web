@@ -15,6 +15,7 @@
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.25.3",
+    "hash-wasm": "^4.11.0",
     "nuxt": "^2.15.8",
     "symbol-crypto-wasm-web": "^0.1.1",
     "symbol-sdk": "^3.1.0",
